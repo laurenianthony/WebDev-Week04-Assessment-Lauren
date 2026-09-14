@@ -4,33 +4,44 @@ session_start();
 $name = $_POST['name'] ?? '';
 $email = $_POST['email'] ?? '';
 $year_level = $_POST['year_level'] ?? '';
-
-// Step 2: Check for missing fields
-if (empty($name) || empty($email) || empty($year_level)) {
-    echo "<h3>Error: All fields are required. Please go back and fill out the form completely.</h3>";
-    echo "<a href='index.html'>← Back to Form</a>";
-} else {
-    // Step 2: Store values into an associative array
-    $student_data = [
-        "Full Name"  => $name,
-        "Email"      => $email,
-        "Year Level" => $year_level
-    ];
-
-    // Step 3: Store name in session
-    $_SESSION['user_name'] = $name;
-
-    echo "<h3>Registration Successful</h3>";
-    echo "<p>Submitted Information:</p>";
-
-    // Step 2: Loop through array with foreach
-    echo "<ul>";
-    foreach ($student_data as $key => $value) {
-        echo "<li><strong>" . $key . ":</strong> " . $value . "</li>";
-    }
-    echo "</ul>";
-
-    // Step 4: Link to second page
-    echo "<br><a href='dashboard.php'>Go to Second Page (Session Test) →</a>";
-}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Summary</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card">
+        <?php
+        if (empty($name) || empty($email) || empty($year_level)) {
+            echo "<h2>Validation Error</h2>";
+            echo "<div class='alert-error'><strong>Error:</strong> All fields are required. Please go back and fill out the form completely.</div>";
+            echo "<a href='index.html' class='btn'>← Back to Form</a>";
+        } else {
+            $student_data = [
+                "Full Name"  => $name,
+                "Email"      => $email,
+                "Year Level" => $year_level
+            ];
+
+            $_SESSION['user_name'] = $name;
+
+            echo "<h2>Registration Details</h2>";
+            echo "<div class='alert-success'>Form submitted successfully!</div>";
+            echo "<ul>";
+            foreach ($student_data as $key => $value) {
+                echo "<li><strong>" . htmlspecialchars($key) . ":</strong> " . htmlspecialchars($value) . "</li>";
+            }
+            echo "</ul>";
+
+            echo "<a href='dashboard.php' class='btn'>Go to Second Page (Session Test) →</a>";
+        }
+        ?>
+    </div>
+
+</body>
+</html>
